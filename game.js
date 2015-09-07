@@ -73,7 +73,7 @@ var spike = {
     posYFalling: 0,
     falling: false,
     speedModifier: 10,
-    tick: 4000
+    tick: 3300 
 }
 
 var ballData = {
@@ -150,6 +150,17 @@ function render(dt) {
     if(game.ballHit && game.tries > 0 && game.tries < game.triesInitial) popupRender('hit');
     if(game.state == 'ready') popupRender('start');
     if(game.state == 'over')  popupRender('restart');
+}
+
+// Reset game when game over popup is clicked
+function gameReset(){
+    setDayNight('day');
+    ballPositionSpawn();
+    triesReset();
+    jugglesReset();
+    highscoreReset();
+    game.scoreRight = 0;
+    game.scoreLeft = 0;
 }
 
 function setSpikeInterval() {
@@ -458,11 +469,11 @@ function popupDrawStart() {
     setDayNight('day');
     context.fillStyle = game.dayColor;
     context.fillRect(0, 0, canvasW, canvasH);
-    context.font = '52px Sans-Serif';
+    context.font = 'bold 52px Sans-Serif';
     context.fillStyle = game.nightColor;
     context.textAlign = 'center';
     context.fillText('BALLS JUGGLE!', canvasCX, canvasCY - 120);
-    context.font = '20px Sans-Serif';
+    context.font = 'bold 20px Sans-Serif';
     context.fillText('FIND YOUR LUCKY BALL!', canvasCX, canvasCY - 80);
     context.fillText('CLICK TO START', canvasCX, canvasCY + 250);
 }
@@ -480,8 +491,9 @@ function popupDrawRestart() {
     context.fillStyle = game.dayColor;
     context.textAlign = 'center';
     context.fillText('YOUR LUCKY BALL DID', canvasCX, canvasCY - 120);
-    context.font = '36px Sans-Serif';
-    context.fillText(game.highscore + ' JUGGLES!', canvasCX, canvasCY - 80);
+    context.font = 'bold 36px Sans-Serif';
+    var s = (game.highscore === 1) ? '' : 'S';
+    context.fillText(game.highscore + ' JUGGLE'+s+'!', canvasCX, canvasCY - 80);
     context.font = '32px Sans-Serif';
     context.fillText(game.luckyBall, canvasCX, canvasCY);
     context.font = '20px Sans-Serif';
@@ -498,7 +510,7 @@ function popupDrawNextTry() {
     context.fillStyle = game.dayColor;
     context.textAlign = 'center';
     context.fillText('OUCH! LOST RIGHT BALL.', canvasCX, 250);
-    context.fillText('GO WITH LEFT BALL.', canvasCX, 280);
+    context.fillText('TIME FOR LEFT BALL.', canvasCX, 280);
     context.fillText('KEEP CLICKING YOUR BALL!!!', canvasCX, 310);
 }
 
@@ -540,17 +552,6 @@ function spikeDrawFalling(multiplierX, multiplierY, c) {
     context.lineTo(20 + (spike.width * multiplierX),60 + spike.posYFalling);
     context.lineTo(40 + (spike.width * multiplierX),40 + spike.posYFalling);
     context.fill();
-}
-
-// Reset game when game over popup is clicked
-function gameReset(){
-    setDayNight('day');
-    ballPositionSpawn();
-    triesReset();
-    jugglesReset();
-    highscoreReset();
-    game.scoreRight = 0;
-    game.scoreLeft = 0;
 }
 
 // Click coordinates
