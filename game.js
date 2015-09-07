@@ -72,8 +72,8 @@ var spike = {
     posYStart: 0,
     posYFalling: 0,
     falling: false,
-    speedModifier: 10,
-    tick: 3300 
+    speedModifier: 5, // 1 is fastest 10 is slow 5 is bit challenging
+    tick: 3300
 }
 
 var ballData = {
